@@ -210,6 +210,7 @@ class UpdateService extends Component {
                     <div className="col-12" style={{paddingTop: '5%'}}>
                         <h2>Update Service</h2>
                         <div style={{textAlign: 'right'}}>
+                            <Button href={`/coupons/${this.state.serviceId}`}>Create Coupon</Button>{'  '}
                             <Button onClick={this.onDelete}>Delete Service</Button>
                         </div>
                     </div>

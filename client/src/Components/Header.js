@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Navbar, NavbarBrand, Nav, NavbarToggler, 
     Collapse, NavItem, Button, Modal, 
     ModalBody, ModalHeader, FormGroup, Form, Input, 
-    Label } from 'reactstrap';
+    Label, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { NavLink, Redirect } from 'react-router-dom';
 
 class Header extends Component {
@@ -12,15 +12,23 @@ class Header extends Component {
         this.state = {
             isLoggedIn: (localStorage.getItem('token') === null) ? false : true,
             isNavOpen: false,
+            isDropOpen: false,
             isPhoneModalOpen: false,
             isOtpModalOpen: false,
         };
+        this.toggleDropdown = this.toggleDropdown.bind(this);
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModalPhone = this.toggleModalPhone.bind(this);
         this.toggleModalOtp = this.toggleModalOtp.bind(this);
         this.handleLoginPhone = this.handleLoginPhone.bind(this);
         this.handleLoginOtp = this.handleLoginOtp.bind(this);
         this.Logout= this.Logout.bind(this);
+    }
+
+    toggleDropdown() {
+        this.setState({
+            isDropOpen: !this.state.isDropOpen
+        });
     }
 
     toggleNav() {
@@ -87,8 +95,6 @@ class Header extends Component {
                         <NavbarToggler onClick={this.toggleNav} />
                         <NavbarBrand className="mr-auto" href="/home">
                             <img src="/assets/logo.jpeg" height="30" width="30" alt="Barbera-Admin" />
-                            {' '}
-                            Barbera Admin
                         </NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>
                             <Nav navbar>
@@ -100,19 +106,52 @@ class Header extends Component {
                                 {
                                     this.state.isLoggedIn ? 
                                     <>
-                                        <NavItem>
-                                            <NavLink className="nav-link" to="/services">
+                                        <Dropdown nav isOpen={this.state.isDropOpen} toggle={this.toggleDropdown}>
+                                            <DropdownToggle nav caret>
                                                 <span className="fa fa-info fa-lg"></span> Services
-                                            </NavLink>
-                                        </NavItem>
+                                            </DropdownToggle>
+                                            <DropdownMenu>
+                                                <DropdownItem>
+                                                    <NavLink className="nav-link" to="/services" style={{color: 'black'}}>
+                                                        Services
+                                                    </NavLink>
+                                                </DropdownItem>
+                                                <DropdownItem divider></DropdownItem>
+                                                <DropdownItem>
+                                                    <NavLink className="nav-link" to="/services/addservice" style={{color: 'black'}}>
+                                                        Add Service
+                                                    </NavLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <NavLink className="nav-link" to="/services/sliderupload" style={{color: 'black'}}>
+                                                        Slider Upload
+                                                    </NavLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <NavLink className="nav-link" to="/services/sliderdelete" style={{color: 'black'}}>
+                                                        Slider Delete
+                                                    </NavLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <NavLink className="nav-link" to="/services/typeupload" style={{color: 'black'}}>
+                                                        Type Upload
+                                                    </NavLink>
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    <NavLink className="nav-link" to="/services/typedelete" style={{color: 'black'}}>
+                                                        Type Delete
+                                                    </NavLink>
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
                                         <NavItem>
                                             <NavLink className="nav-link" to="/mailer">
                                                 <span className="fa fa-envelope fa-lg"></span> Mailer
                                             </NavLink>
                                         </NavItem>
                                         <NavItem>
-                                            <NavLink className="nav-link" to="/contactus">
-                                                <span className="fa fa-address-card fa-lg"></span> Contact Us
+                                            <NavLink className="nav-link" to="/coininc">
+                                                <span className="fa fa-bitcoin fa-lg"></span> Coins
                                             </NavLink>
                                         </NavItem> 
                                     </>
