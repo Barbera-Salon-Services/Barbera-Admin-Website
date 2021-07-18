@@ -28,10 +28,6 @@ class AllServices extends Component {
         } 
     }
 
-    componentDidUpdate() {
-        console.log("update");
-    }
-
     getServices = async() => {
         if(localStorage.getItem('token') !== null){
             const token = localStorage.getItem('token');
@@ -43,7 +39,7 @@ class AllServices extends Component {
                     'Authorization': 'Bearer ' + token
                 }
             };
-            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Prod/getallservname', requestOptions)
+            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/getallservname', requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -74,7 +70,7 @@ class AllServices extends Component {
                     <div className="row row-content">
                         <div className="col-12">
                             <h2>Services</h2>
-                            <Button href="/services/addservice" variant="outline-secondary" size="lg" style={{float: 'right'}}>
+                            <Button href="/services/addservice" variant="info" size="lg" style={{float: 'right'}}>
                                 Add Service
                             </Button>
                         </div>

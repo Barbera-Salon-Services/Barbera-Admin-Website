@@ -97,21 +97,28 @@ class Header extends Component {
                                         <span className="fa fa-home fa-lg"></span> Home
                                     </NavLink>
                                 </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/services">
-                                        <span className="fa fa-info fa-lg"></span> Services
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/menu">
-                                        <span className="fa fa-list fa-lg"></span> Menu
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/contactus">
-                                        <span className="fa fa-address-card fa-lg"></span> Contact Us
-                                    </NavLink>
-                                </NavItem>
+                                {
+                                    this.state.isLoggedIn ? 
+                                    <>
+                                        <NavItem>
+                                            <NavLink className="nav-link" to="/services">
+                                                <span className="fa fa-info fa-lg"></span> Services
+                                            </NavLink>
+                                        </NavItem>
+                                        <NavItem>
+                                            <NavLink className="nav-link" to="/mailer">
+                                                <span className="fa fa-envelope fa-lg"></span> Mailer
+                                            </NavLink>
+                                        </NavItem>
+                                        <NavItem>
+                                            <NavLink className="nav-link" to="/contactus">
+                                                <span className="fa fa-address-card fa-lg"></span> Contact Us
+                                            </NavLink>
+                                        </NavItem> 
+                                    </>
+                                    :
+                                    null
+                                }
                             </Nav>
                             { 
                                 this.state.isLoggedIn ?

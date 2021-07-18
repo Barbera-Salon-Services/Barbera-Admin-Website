@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Button,Form, FormGroup, Label, Input, Col, Row, FormFeedback, FormText } from 'reactstrap';
-import { Redirect } from 'react-router-dom';
+import { Breadcrumb, BreadcrumbItem, Button,Form, FormGroup, Label, Input, Col, FormFeedback, FormText } from 'reactstrap';
+import { Row, Image } from 'react-bootstrap';
+import { Redirect, useParams } from 'react-router-dom';
 
-class AddService extends Component {
+class UpdateService extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            serviceId: this.props.match.params.serviceId,
             name: '',
             time: '',
             price: '',
@@ -16,6 +18,7 @@ class AddService extends Component {
             cutprice: '',
             details: '',
             image: '',
+            imgurl: '',
             dod: false,
             trending: false,
             touched: {
@@ -24,14 +27,51 @@ class AddService extends Component {
                 price: false,
                 category: false,
                 type: false,
-                subtype: false,
-                cutprice: false,
-                details: false,
-                dod: false,
-                trending: false,
             }
         }
         this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    componentDidMount() {
+        if(localStorage.getItem('token')){
+            console.log(this.state);
+            this.getService();
+        } 
+    }
+
+    getService = async() => {
+        if(localStorage.getItem('token') !== null){
+            const token = localStorage.getItem('token');
+            console.log(token); 
+            const serviceId = this.state.serviceId;
+            const requestOptions = {
+                method: 'GET',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            };
+            await fetch(`https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/getservbyid/${serviceId}`, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(data.data);
+                    this.setState({
+                        name: data.data.name,
+                        time: data.data.time,
+                        price: data.data.price,
+                        category: data.data.category,
+                        type: data.data.type,
+                        subtype: data.data.subtype,
+                        details: data.data.details,
+                        cutprice: data.data.cutprice,
+                        trending: data.data.trending,
+                        imgurl: data.data.image + `?${new Date()}`,
+                        dod: data.data.dod,
+                    });
+                })
+                .catch(error => alert(error));
+        } 
     }
 
     handleInputChange(event) {
@@ -94,6 +134,30 @@ class AddService extends Component {
         return errors;
     }
 
+    onDelete = async(event) => {
+        event.preventDefault();
+        console.log("Submitting:",this.state);
+        if(localStorage.getItem('token') !== null){
+            const token = localStorage.getItem('token');
+            console.log(token); 
+            const serviceId = this.state.serviceId;
+            const requestOptions = {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            };
+            await fetch(`https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/delservice/${serviceId}`, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Service added");
+                    this.props.history.push('/services');
+                })
+                .catch(error => alert(error));
+        } 
+    }
+
     onSubmit = async(event) => {
         event.preventDefault();
         console.log("Submitting:",this.state);
@@ -101,6 +165,7 @@ class AddService extends Component {
             const token = localStorage.getItem('token');
             console.log(token); 
             var data = {
+                id: this.state.serviceId,
                 name: this.state.name,
                 time: this.state.time,
                 price: this.state.price,
@@ -121,36 +186,11 @@ class AddService extends Component {
                 },
                 body: JSON.stringify(data)
             };
-            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/addservice', requestOptions)
+            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/updateservice', requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Service added");
-                    this.setState({
-                        name: '',
-                        time: '',
-                        price: '',
-                        category: '',
-                        type: '',
-                        subtype: '',
-                        details: '',
-                        cutprice: '',
-                        trending: false,
-                        image: '',
-                        dod: false,
-                        touched: {
-                            name: false,
-                            time: false,
-                            price: false,
-                            category: false,
-                            type: false,
-                            subtype: false,
-                            cutprice: false,
-                            details: false,
-                            dod: false,
-                            trending: false,
-                        }
-                    });
-                    event.target.reset();
+                    this.getService();
                 })
                 .catch(error => alert(error));
         } 
@@ -159,17 +199,25 @@ class AddService extends Component {
     render() {
 
         console.log(this.state);
-        console.log(this.state.image);
+        console.log(this.state.imgurl);
         
-        const errors = this.validate(this.state.name, this.state.time, this.state.price, this.state.category, this.state.type);
+        const errors = this.validate(this.state.name, this.state.time, this.state.price, this.state.category, this.state.type );
 
         return (
             <>
                 { localStorage.getItem('token') ? null : <Redirect to="/home" />}
                 <div className="container">
                     <div className="col-12" style={{paddingTop: '5%'}}>
-                        <h2>Add Service</h2>
+                        <h2>Update Service</h2>
+                        <div style={{textAlign: 'right'}}>
+                            <Button onClick={this.onDelete}>Delete Service</Button>
+                        </div>
                     </div>
+                    <Row>
+                        <Col xs={6} md={4} style={{marginInline: 'auto', paddingBottom: '3%'}}>
+                            <Image src={this.state.imgurl} roundedCircle style={{width: '100%',height: '130%'}} key={this.state.serviceId}/>
+                        </Col>
+                    </Row>
                     <Form style={{paddingTop: '5%'}} onSubmit={this.onSubmit}>
                         <FormGroup row>
                             <Label for="name" sm={2}>Service Name</Label>
@@ -231,20 +279,18 @@ class AddService extends Component {
                                 placeholder="Details"
                                 value={this.state.details ? this.state.details : ''} 
                                 onChange={this.handleInputChange} 
-                                onBlur={this.handleBlur('details')}
                             />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
                             <Label for="cutprice" sm={2}>Cut Price</Label>
                             <Col sm={10}>
-                                <Input type="text" id="cutprice" 
-                                    name="cutprice" 
-                                    placeholder="Cut Price" 
-                                    value={this.state.cutprice} 
-                                    onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('cutprice')}
-                                />
+                            <Input type="text" id="cutprice" 
+                                name="cutprice" 
+                                placeholder="Cut Price" 
+                                value={this.state.cutprice} 
+                                onChange={this.handleInputChange} 
+                            />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -284,13 +330,12 @@ class AddService extends Component {
                         <FormGroup row>
                             <Label for="subtype" sm={2}>Sub Type</Label>
                             <Col sm={10}>
-                                <Input type="text" id="subtype" 
-                                    name="subtype" 
-                                    placeholder="Sub Type" 
-                                    value={this.state.subtype} 
-                                    onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('subtype')} 
-                                />
+                            <Input type="text" id="subtype" 
+                                name="subtype" 
+                                placeholder="Sub Type"
+                                value={this.state.subtype} 
+                                onChange={this.handleInputChange}  
+                            />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -313,8 +358,8 @@ class AddService extends Component {
                                 <Label check>
                                 <Input type="checkbox" id="trending" 
                                     name="trending" 
-                                    onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('trending')} 
+                                    checked={this.state.trending}
+                                    onChange={this.handleInputChange}  
                                 />{' '}
                                     Trending
                                 </Label>
@@ -328,8 +373,8 @@ class AddService extends Component {
                                 <Label check>
                                 <Input type="checkbox" id="dod" 
                                     name="dod"
+                                    checked={this.state.dod}
                                     onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('dod')} 
                                 />{' '}
                                     Deal of the Day
                                 </Label>
@@ -348,4 +393,4 @@ class AddService extends Component {
     }
 }
 
-export default AddService;
+export default UpdateService;
