@@ -58,35 +58,47 @@ class Header extends Component {
     }
 
     handleLoginPhone(event) {
-        this.toggleModalPhone();
-        this.toggleModalOtp();
-        console.log("Phone: " + this.phone.value );
-        const data = {
-            phone: this.phone.value
-        };
-        this.props.loginphone(data);
-        event.preventDefault();
+        if(this.phone.value === '' || this.phone.value === null){
+            alert('No phone number was entered');
+            event.preventDefault();
+        } else {
+            this.toggleModalPhone();
+            this.toggleModalOtp();
+            console.log("Phone: " + this.phone.value );
+            const data = {
+                phone: this.phone.value,
+                mode: 'web'
+            };
+            this.props.loginphone(data);
+            event.preventDefault();
+        }
     }
 
     handleLoginOtp(event) {
-        this.toggleModalOtp();
-        console.log("OTP: " + this.otp.value);
-        var data = {
-            otp: this.otp.value,
-            role: 'admin'
+        if(this.otp.value === '' || this.otp.value === null){
+            alert('No otp sent');
+            event.preventDefault();
+        } else {
+            this.toggleModalOtp();
+            console.log("OTP: " + this.otp.value);
+            var data = {
+                otp: this.otp.value,
+                role: 'admin'
+            }
+            var login = this.props.loginotp(data);
+            if(login) {
+                this.setState({
+                    isLoggedIn: true
+                });
+            }
+            event.preventDefault();
         }
-        var login = this.props.loginotp(data);
-        if(login) {
-            this.setState({
-                isLoggedIn: true
-            });
-        }
-        event.preventDefault();
     }
 
     
     render() {
         console.log(this.state.isLoggedIn);
+
         return (
             <>              
                 { this.state.isLoggedIn ? null : <Redirect to="/home" /> }
@@ -154,6 +166,11 @@ class Header extends Component {
                                                 <span className="fa fa-bitcoin fa-lg"></span> Coins
                                             </NavLink>
                                         </NavItem> 
+                                        <NavItem>
+                                            <NavLink className="nav-link" to="/coupons">
+                                                <span className="fa fa-credit-card fa-lg"></span> Coupons
+                                            </NavLink>
+                                        </NavItem> 
                                     </>
                                     :
                                     null
@@ -186,7 +203,8 @@ class Header extends Component {
                             <FormGroup>
                                 <Label htmlFor="phone">Phone No.</Label>
                                 <Input type="text" id="phone" name="phone" 
-                                    innerRef={(input) => this.phone = input }/>
+                                    innerRef={(input) => this.phone = input }
+                                />
                             </FormGroup>
                             <Button type="submit" value="submit" color="primary">Submit</Button>
                         </Form>

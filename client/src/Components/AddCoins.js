@@ -129,7 +129,7 @@ class CoinIncrease extends Component {
                         </FormGroup>
                         <FormGroup check row style={{paddingLeft: '0px'}}>
                             <Col sm={{ size: 10, offset: 0 }}>
-                                <Button ><i class="fa fa-paper-plane"></i>{' '}Add</Button>
+                                <Button ><i className="fa fa-paper-plane"></i>{' '}Add</Button>
                             </Col>
                         </FormGroup>
                     </Form>

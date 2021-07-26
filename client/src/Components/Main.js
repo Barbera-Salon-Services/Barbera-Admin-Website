@@ -11,6 +11,8 @@ import TypeUpload from './TypeUpload';
 import TypeDelete from './TypeDelete';
 import AddCoins from './AddCoins';
 import CouponCreate from './CouponCreate';
+import Coupons from './Coupons';
+import CouponInfo from './CouponInfo';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { LoginPhone, LoginOtp } from '../Functions/login';
 
@@ -18,10 +20,6 @@ class Main extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-        services: []
-    };
   }
 
   render() {
@@ -38,10 +36,11 @@ class Main extends Component {
                 <Route exact path="/services/typedelete" component={(props) => <TypeDelete {...props}/>} />
                 <Route exact path="/services/addservice" component={(props) => <AddService {...props}/>} />
                 <Route path="/services/:serviceId" component={(props) => <UpdateService {...props}/>} />
+                <Route exact path="/coupons" component={(props) => <Coupons {...props}/>} />
+                <Route exact path="/coupon/:name/:serviceId" component={(props) => <CouponInfo {...props}/>} />
                 <Route path="/coupons/:serviceId" component={(props) => <CouponCreate {...props}/>} />
                 <Route path="/mailer" component={() => <Mailer />} />
                 <Route path="/coininc" component={() => <AddCoins />} />
-                {/* <Route exact path="/contactus" component={Contact} /> */}
                 <Redirect to="/home" />
             </Switch>
             {/* <Footer /> */}

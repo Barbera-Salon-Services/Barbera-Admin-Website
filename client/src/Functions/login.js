@@ -10,14 +10,15 @@ export const LoginPhone = async (data) => {
         await fetch('https://fma7xvauo3.execute-api.ap-south-1.amazonaws.com/Prod/loginphone', requestOptions)
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 localStorage.setItem('phonetoken',data.token);
+                console.log("OTP sent");
+                return true;
             })
             .catch(error => {
                 alert(error);
                 return false;
             });
-        console.log("OTP sent");
-        return true;
     } catch (err) {
         alert(err.message);
         return false;
@@ -41,15 +42,16 @@ export const LoginOtp = async (data) => {
         await fetch('https://fma7xvauo3.execute-api.ap-south-1.amazonaws.com/Prod/loginotp', requestOptions)
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 localStorage.setItem('token',data.token);
+                console.log("Login/Signup successful");
+                localStorage.removeItem('phonetoken');
+                return true;
             })
             .catch(error => {
                 alert(error);
                 return false;
             });
-        console.log("Login/Signup successful");
-        localStorage.removeItem('phonetoken');
-        return true;
     } catch (err) {
         alert(err.message);
         return false;

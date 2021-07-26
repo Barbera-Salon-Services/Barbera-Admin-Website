@@ -143,7 +143,7 @@ class TypeDelete extends Component {
                         </FormGroup>
                         <FormGroup check row style={{paddingLeft: '0px'}}>
                             <Col sm={{ size: 10, offset: 0 }}>
-                                <Button ><i class="fa fa-trash"></i>{' '}Delete</Button>
+                                <Button ><i className="fa fa-trash"></i>{' '}Delete</Button>
                             </Col>
                         </FormGroup>
                     </Form>
