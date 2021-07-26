@@ -3,7 +3,7 @@ export const LoginPhone = async (data) => {
         console.log("In login phone auth");
         console.log(data);
         const requestOptions = {
-            method: 'POST',
+            method: 'OPTIONS',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         };
@@ -32,7 +32,7 @@ export const LoginOtp = async (data) => {
         const token = localStorage.getItem('phonetoken');
         console.log(token);
         const requestOptions = {
-            method: 'POST',
+            method: 'OPTIONS',
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
