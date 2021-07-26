@@ -24,7 +24,7 @@ class Home extends Component {
             console.log(token); 
             const serviceId = this.state.serviceId;
             const requestOptions = {
-                method: 'OPTIONS',
+                method: 'GET',
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token

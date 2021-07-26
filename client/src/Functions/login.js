@@ -3,11 +3,11 @@ export const LoginPhone = async (data) => {
         console.log("In login phone auth");
         console.log(data);
         const requestOptions = {
-            method: 'OPTIONS',
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         };
-        await fetch('https://fma7xvauo3.execute-api.ap-south-1.amazonaws.com/Prod/loginphone', requestOptions)
+        await fetch('https://fma7xvauo3.execute-api.ap-south-1.amazonaws.com/Dev/loginphone', requestOptions)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -32,14 +32,14 @@ export const LoginOtp = async (data) => {
         const token = localStorage.getItem('phonetoken');
         console.log(token);
         const requestOptions = {
-            method: 'OPTIONS',
+            method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify(data)
         };
-        await fetch('https://fma7xvauo3.execute-api.ap-south-1.amazonaws.com/Prod/loginotp', requestOptions)
+        await fetch('https://fma7xvauo3.execute-api.ap-south-1.amazonaws.com/Dev/loginotp', requestOptions)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
