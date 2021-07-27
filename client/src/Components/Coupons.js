@@ -77,7 +77,7 @@ class Coupons extends Component {
                             <Media list>
                                 <div className="d-grid gap-2">
                                     <br />
-                                    {coupons}
+                                    {this.state.coupons.length !== 0 ? coupons : null}
                                 </div>
                             </Media>
                         </div>

@@ -78,7 +78,7 @@ class AllServices extends Component {
                             <Media list>
                                 <div className="d-grid gap-2">
                                     <br />
-                                    {services}
+                                    {this.state.services.length !== 0 ? services : null}
                                 </div>
                             </Media>
                         </div>
