@@ -42,32 +42,37 @@ class SliderDelete extends Component {
         console.log(event.target.value);
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            const token = localStorage.getItem('token');
-            console.log(token); 
-            var data = {
-                name: this.state.name
-            };
-            const requestOptions = {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify(data)
-            };
-            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/sliderdelete', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Slider added");
-                    this.setState({
-                        name: '',
-                        touched: {
-                            name: false,
-                        }
-                    });
-                    event.target.reset();
-                })
-                .catch(error => alert(error));
+            if(this.state.name === '') {
+                alert('Please fill the full form');
+                console.log("Submission Failed");
+            } else {
+                const token = localStorage.getItem('token');
+                console.log(token); 
+                var data = {
+                    name: this.state.name
+                };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                };
+                await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/sliderdelete', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Slider added");
+                        this.setState({
+                            name: '',
+                            touched: {
+                                name: false,
+                            }
+                        });
+                        event.target.reset();
+                    })
+                    .catch(error => alert(error));
+            }
         } 
     }
 

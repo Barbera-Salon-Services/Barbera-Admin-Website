@@ -22,7 +22,6 @@ class Home extends Component {
         if(localStorage.getItem('token') !== null){
             const token = localStorage.getItem('token');
             console.log(token); 
-            const serviceId = this.state.serviceId;
             const requestOptions = {
                 method: 'GET',
                 headers: { 

@@ -68,35 +68,40 @@ class SliderUpload extends Component {
         console.log(event.target.value);
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            const token = localStorage.getItem('token');
-            console.log(token); 
-            var data = {
-                name: this.state.name,
-                image: this.state.image
-            };
-            const requestOptions = {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify(data)
-            };
-            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/sliderupload', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Slider added");
-                    this.setState({
-                        name: '',
-                        image: '',
-                        touched: {
-                            name: false,
-                            image: false,
-                        }
-                    });
-                    event.target.reset();
-                })
-                .catch(error => alert(error));
+
+            if(this.state.name === '' || this.state.image === ''){
+                alert('Please fill the full form.');
+            } else {
+                const token = localStorage.getItem('token');
+                console.log(token); 
+                var data = {
+                    name: this.state.name,
+                    image: this.state.image
+                };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                };
+                await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/sliderupload', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Slider added");
+                        this.setState({
+                            name: '',
+                            image: '',
+                            touched: {
+                                name: false,
+                                image: false,
+                            }
+                        });
+                        event.target.reset();
+                    })
+                    .catch(error => alert(error));
+            }   
         } 
     }
 
@@ -111,7 +116,7 @@ class SliderUpload extends Component {
                 { localStorage.getItem('token') ? null : <Redirect to="/home" />}
                 <div className="container">
                     <div className="col-12" style={{paddingTop: '5%'}}>
-                        <h2>Slider Upload</h2>
+                        <h2>Slider Upload/Update</h2>
                     </div>
                     <Form style={{paddingTop: '5%'}} onSubmit={this.onSubmit}>
                         <FormGroup row>

@@ -8,11 +8,9 @@ class TypeUpload extends Component {
         this.state = {
             category: '',
             type: '',
-            subtype: '',
             image: '',
             touched: {
                 category: false,
-                type: false,
                 image: false,
             }
         }
@@ -51,18 +49,14 @@ class TypeUpload extends Component {
         })
     }
 
-    validate(category, type, image) {
+    validate(category, image) {
         const errors = {
             category: '',
-            type: '',
             image: ''
         };
 
         if(this.state.touched.category && category.length === 0)
             errors.category = 'Category should not be empty';
-
-        if(this.state.touched.type && type.length === 0)
-            errors.type = 'Type should not be empty';
 
         if(this.state.touched.image && image.length === 0)
             errors.image = 'Image not uploaded';
@@ -74,40 +68,42 @@ class TypeUpload extends Component {
         event.preventDefault();
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            const token = localStorage.getItem('token');
-            console.log(token); 
-            var data = {
-                category: this.state.category,
-                type: this.state.type,
-                subtype: this.state.subtype ? this.state.subtype : null,
-                image: this.state.image,
-            };
-            const requestOptions = {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify(data)
-            };
-            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/typeupload', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Image Uploaded");
-                    this.setState({
-                        category: '',
-                        type: '',
-                        subtype: '',
-                        image: '',
-                        touched: {
-                            category: false,
-                            type: false,
-                            image: false,
-                        }
-                    });
-                    event.target.reset();
-                })
-                .catch(error => alert(error));
+            if(this.state.category === '' || this.state.image === '') {
+                alert('Please fill the full form');
+                console.log('Submission failed');
+            } else {
+                const token = localStorage.getItem('token');
+                console.log(token); 
+                var data = {
+                    category: this.state.category,
+                    type: this.state.type ? this.state.type : null,
+                    image: this.state.image,
+                };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                };
+                await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/typeupload', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Image Uploaded");
+                        this.setState({
+                            category: '',
+                            type: '',
+                            image: '',
+                            touched: {
+                                category: false,
+                                image: false,
+                            }
+                        });
+                        event.target.reset();
+                    })
+                    .catch(error => alert(error));
+            }
         } 
     }
 
@@ -115,14 +111,14 @@ class TypeUpload extends Component {
 
         console.log(this.state);
 
-        const errors = this.validate(this.state.category, this.state.type, this.state.subtype, this.state.image);
+        const errors = this.validate(this.state.category, this.state.image);
 
         return (
             <>
                 { localStorage.getItem('token') ? null : <Redirect to="/home" />}
                 <div className="container">
                     <div className="col-12" style={{paddingTop: '5%'}}>
-                        <h2>Type and Sub Type Image Upload</h2>
+                        <h2>Type Image Upload</h2>
                     </div>
                     <Form style={{paddingTop: '5%'}} onSubmit={this.onSubmit}>
                         <FormGroup row>
@@ -148,29 +144,9 @@ class TypeUpload extends Component {
                                 <Input type="text" id="type" 
                                     name="type" 
                                     placeholder="Type"
-                                    valid={errors.type === ''}
-                                    invalid={errors.type !== ''} 
                                     value={this.state.type} 
                                     onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('type')} 
                                 />
-                                <FormFeedback>
-                                    {errors.type}
-                                </FormFeedback>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="subtype" sm={2}>Sub Type</Label>
-                            <Col sm={5}>
-                                <Input type="text" id="subtype" 
-                                    name="subtype" 
-                                    placeholder="Sub Type"
-                                    value={this.state.subtype} 
-                                    onChange={this.handleInputChange} 
-                                />
-                                <FormFeedback>
-                                    {errors.subtype}
-                                </FormFeedback>
                             </Col>
                         </FormGroup>
                         <FormGroup row>

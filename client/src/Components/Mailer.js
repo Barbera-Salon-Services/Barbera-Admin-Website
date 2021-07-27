@@ -55,27 +55,32 @@ class Mailer extends Component {
         event.preventDefault();
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            const token = localStorage.getItem('token');
-            console.log(token); 
-            var data = {
-                to: this.state.to,
-                subject: this.state.subject,
-                body: this.state.body,
-            };
-            const requestOptions = {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify(data)
-            };
-            await fetch('https://ivhc87o8xe.execute-api.ap-south-1.amazonaws.com/Dev/sendmail', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Service added");
-                })
-                .catch(error => alert(error));
+            if(this.state.to === '' || this.state.body === '' || this.state.subject === '') {
+                alert('Please fill the full form');
+                console.log("Submission Failed");
+            } else {
+                const token = localStorage.getItem('token');
+                console.log(token); 
+                var data = {
+                    to: this.state.to,
+                    subject: this.state.subject,
+                    body: this.state.body,
+                };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                };
+                await fetch('https://ivhc87o8xe.execute-api.ap-south-1.amazonaws.com/Dev/sendmail', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Service added");
+                    })
+                    .catch(error => alert(error));
+            }
         } 
     }
 
