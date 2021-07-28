@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem, Button,Form, FormGroup, Label, Input, Col, FormFeedback, FormText } from 'reactstrap';
-import { Row, Image } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { Redirect, useParams } from 'react-router-dom';
 
 class UpdateService extends Component {
@@ -17,7 +17,6 @@ class UpdateService extends Component {
             subtype: '',
             cutprice: '',
             details: '',
-            image: '',
             imgurl: '',
             dod: false,
             trending: false,
@@ -66,7 +65,6 @@ class UpdateService extends Component {
                         details: data.data.details,
                         cutprice: data.data.cutprice,
                         trending: data.data.trending,
-                        imgurl: data.data.image + `?${new Date()}`,
                         dod: data.data.dod,
                     });
                 })
@@ -85,26 +83,6 @@ class UpdateService extends Component {
         this.setState({
             touched: { ...this.state.touched, [field]: true}
         });
-    }
-
-    onChange = (e) => {
-        console.log("file to upload:", e.target.files[0]);
-        let file = e.target.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = this._handleReaderLoaded.bind(this);
-
-            reader.readAsBinaryString(file);
-        }
-    }
-
-    _handleReaderLoaded = (readerEvt) => {
-        let binaryString = readerEvt.target.result;
-        this.setState({
-            image: btoa(binaryString)
-        })
     }
 
     validate(name, time, price, category, type) {
@@ -174,7 +152,6 @@ class UpdateService extends Component {
                 subtype: (this.state.subtype === '') ? null : this.state.subtype,
                 cutprice: this.state.cutprice,
                 details: this.state.details,
-                image: this.state.image,
                 dod: this.state.dod,
                 trending: this.state.trending,
             };
@@ -214,11 +191,6 @@ class UpdateService extends Component {
                             <Button onClick={this.onDelete}>Delete Service</Button>
                         </div>
                     </div>
-                    <Row>
-                        <Col xs={6} md={4} style={{marginInline: 'auto', paddingBottom: '3%'}}>
-                            <Image src={this.state.imgurl} roundedCircle style={{width: '100%',height: '130%'}} key={this.state.serviceId}/>
-                        </Col>
-                    </Row>
                     <Form style={{paddingTop: '5%'}} onSubmit={this.onSubmit}>
                         <FormGroup row>
                             <Label for="name" sm={2}>Service Name</Label>
@@ -337,19 +309,6 @@ class UpdateService extends Component {
                                 value={this.state.subtype} 
                                 onChange={this.handleInputChange}  
                             />
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="file" sm={2}>Image</Label>
-                            <Col sm={10}>
-                            <Input type="file" name="file" 
-                                id="file" 
-                                accept=".jpeg, .png, .jpg"
-                                onChange={this.onChange}
-                            />
-                            <FormText color="muted">
-                                Only .jpeg, .png, .jpg files
-                            </FormText>
                             </Col>
                         </FormGroup>
                         <FormGroup row>

@@ -15,7 +15,6 @@ class AddService extends Component {
             subtype: '',
             cutprice: '',
             details: '',
-            image: '',
             dod: false,
             trending: false,
             touched: {
@@ -45,26 +44,6 @@ class AddService extends Component {
         this.setState({
             touched: { ...this.state.touched, [field]: true}
         });
-    }
-
-    onChange = (e) => {
-        console.log("file to upload:", e.target.files[0]);
-        let file = e.target.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = this._handleReaderLoaded.bind(this);
-
-            reader.readAsBinaryString(file);
-        }
-    }
-
-    _handleReaderLoaded = (readerEvt) => {
-        let binaryString = readerEvt.target.result;
-        this.setState({
-            image: btoa(binaryString)
-        })
     }
 
     validate(name, time, price, category, type) {
@@ -109,7 +88,6 @@ class AddService extends Component {
                 subtype: (this.state.subtype === '') ? null : this.state.subtype,
                 cutprice: this.state.cutprice,
                 details: this.state.details,
-                image: this.state.image,
                 dod: this.state.dod,
                 trending: this.state.trending,
             };
@@ -135,7 +113,6 @@ class AddService extends Component {
                         details: '',
                         cutprice: '',
                         trending: false,
-                        image: '',
                         dod: false,
                         touched: {
                             name: false,
@@ -159,7 +136,6 @@ class AddService extends Component {
     render() {
 
         console.log(this.state);
-        console.log(this.state.image);
         
         const errors = this.validate(this.state.name, this.state.time, this.state.price, this.state.category, this.state.type);
 
@@ -291,19 +267,6 @@ class AddService extends Component {
                                     onChange={this.handleInputChange} 
                                     onBlur={this.handleBlur('subtype')} 
                                 />
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="file" sm={2}>Image</Label>
-                            <Col sm={10}>
-                            <Input type="file" name="file" 
-                                id="file" 
-                                accept=".jpeg, .png, .jpg"
-                                onChange={this.onChange}
-                            />
-                            <FormText color="muted">
-                                Only .jpeg, .png, .jpg files
-                            </FormText>
                             </Col>
                         </FormGroup>
                         <FormGroup row>
