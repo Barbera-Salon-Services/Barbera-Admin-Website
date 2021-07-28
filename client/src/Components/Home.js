@@ -25,11 +25,12 @@ class Home extends Component {
             const requestOptions = {
                 method: 'GET',
                 headers: { 
+                    "Access-Control-Allow-Headers":"*",
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
                 }
             };
-            await fetch(`https://ivhc87o8xe.execute-api.ap-south-1.amazonaws.com/Dev/getlogs`, requestOptions)
+            await fetch(`https://xwtij1tqrc.execute-api.ap-south-1.amazonaws.com/Dev/getlogs`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
