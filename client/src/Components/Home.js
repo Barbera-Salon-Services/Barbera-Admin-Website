@@ -25,7 +25,6 @@ class Home extends Component {
             const requestOptions = {
                 method: 'GET',
                 headers: { 
-                    "Access-Control-Allow-Headers":"*",
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
                 }

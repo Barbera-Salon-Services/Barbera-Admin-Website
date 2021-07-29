@@ -19,15 +19,10 @@ class AddService extends Component {
             trending: false,
             touched: {
                 name: false,
-                time: false,
                 price: false,
                 category: false,
                 type: false,
                 subtype: false,
-                cutprice: false,
-                details: false,
-                dod: false,
-                trending: false,
             }
         }
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -46,13 +41,13 @@ class AddService extends Component {
         });
     }
 
-    validate(name, time, price, category, type) {
+    validate(name, price, category, type, subtype) {
         const errors = {
             name: '',
-            time: '',
             price: '',
             category: '',
             type: '',
+            subtype: '',
         };
 
         if(this.state.touched.name && name.length === 0)
@@ -61,14 +56,14 @@ class AddService extends Component {
         if(this.state.touched.price && price.length === 0)
             errors.price = 'Price should not be empty';
 
-        if(this.state.touched.time && time.length === 0)
-            errors.time = 'Time should not be empty';
-
         if(this.state.touched.category && category.length === 0)
             errors.category = 'Category should not be empty';
 
         if(this.state.touched.type && type.length === 0)
             errors.type = 'Type should not be empty';
+
+        if(this.state.touched.subtype && subtype.length === 0)
+            errors.subtype = 'Subtype should not be empty';
 
         return errors;
     }
@@ -77,59 +72,59 @@ class AddService extends Component {
         event.preventDefault();
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            const token = localStorage.getItem('token');
-            console.log(token); 
-            var data = {
-                name: this.state.name,
-                time: this.state.time,
-                price: this.state.price,
-                category: this.state.category,
-                type: this.state.type,
-                subtype: (this.state.subtype === '') ? null : this.state.subtype,
-                cutprice: this.state.cutprice,
-                details: this.state.details,
-                dod: this.state.dod,
-                trending: this.state.trending,
-            };
-            const requestOptions = {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify(data)
-            };
-            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/addservice', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Service added");
-                    this.setState({
-                        name: '',
-                        time: '',
-                        price: '',
-                        category: '',
-                        type: '',
-                        subtype: '',
-                        details: '',
-                        cutprice: '',
-                        trending: false,
-                        dod: false,
-                        touched: {
-                            name: false,
-                            time: false,
-                            price: false,
-                            category: false,
-                            type: false,
-                            subtype: false,
-                            cutprice: false,
-                            details: false,
-                            dod: false,
+            if(this.state.name === '' || this.state.price === '' || this.state.category === '' || this.state.type === '' || this.state.subtype === '') {
+                alert("Please fill the required details");
+                console.log("Submission Failed");
+            } else {
+                const token = localStorage.getItem('token');
+                console.log(token); 
+                var data = {
+                    name: this.state.name,
+                    time: this.state.time,
+                    price: this.state.price,
+                    category: this.state.category,
+                    type: this.state.type,
+                    subtype: (this.state.subtype === '') ? null : this.state.subtype,
+                    cutprice: this.state.cutprice,
+                    details: this.state.details,
+                    dod: this.state.dod,
+                    trending: this.state.trending,
+                };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                };
+                await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/addservice', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Service added");
+                        this.setState({
+                            name: '',
+                            time: '',
+                            price: '',
+                            category: '',
+                            type: '',
+                            subtype: '',
+                            details: '',
+                            cutprice: '',
                             trending: false,
-                        }
-                    });
-                    event.target.reset();
-                })
-                .catch(error => alert(error));
+                            dod: false,
+                            touched: {
+                                name: false,
+                                price: false,
+                                category: false,
+                                type: false,
+                                subtype: false,
+                            }
+                        });
+                        event.target.reset();
+                    })
+                    .catch(error => alert(error));
+            }
         } 
     }
 
@@ -137,7 +132,7 @@ class AddService extends Component {
 
         console.log(this.state);
         
-        const errors = this.validate(this.state.name, this.state.time, this.state.price, this.state.category, this.state.type);
+        const errors = this.validate(this.state.name, this.state.price, this.state.category, this.state.type, this.state.subtype);
 
         return (
             <>
@@ -169,16 +164,10 @@ class AddService extends Component {
                             <Col sm={10}>
                                 <Input type="text" id="time" 
                                     name="time" 
-                                    placeholder="Time"
-                                    valid={errors.time === ''}
-                                    invalid={errors.time !== ''}  
+                                    placeholder="Time"  
                                     value={this.state.time} 
                                     onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('time')} 
                                 />
-                                <FormFeedback>
-                                    {errors.time}
-                                </FormFeedback>
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -207,7 +196,6 @@ class AddService extends Component {
                                 placeholder="Details"
                                 value={this.state.details ? this.state.details : ''} 
                                 onChange={this.handleInputChange} 
-                                onBlur={this.handleBlur('details')}
                             />
                             </Col>
                         </FormGroup>
@@ -219,7 +207,6 @@ class AddService extends Component {
                                     placeholder="Cut Price" 
                                     value={this.state.cutprice} 
                                     onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('cutprice')}
                                 />
                             </Col>
                         </FormGroup>
@@ -263,10 +250,15 @@ class AddService extends Component {
                                 <Input type="text" id="subtype" 
                                     name="subtype" 
                                     placeholder="Sub Type" 
+                                    valid={errors.subtype === ''}
+                                    invalid={errors.subtype !== ''}
                                     value={this.state.subtype} 
                                     onChange={this.handleInputChange} 
                                     onBlur={this.handleBlur('subtype')} 
                                 />
+                                <FormFeedback>
+                                    {errors.subtype}
+                                </FormFeedback>
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -277,7 +269,6 @@ class AddService extends Component {
                                 <Input type="checkbox" id="trending" 
                                     name="trending" 
                                     onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('trending')} 
                                 />{' '}
                                     Trending
                                 </Label>
@@ -292,7 +283,6 @@ class AddService extends Component {
                                 <Input type="checkbox" id="dod" 
                                     name="dod"
                                     onChange={this.handleInputChange} 
-                                    onBlur={this.handleBlur('dod')} 
                                 />{' '}
                                     Deal of the Day
                                 </Label>

@@ -63,7 +63,7 @@ class TypeDelete extends Component {
                 await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/typedelete', requestOptions)
                     .then(response => response.json())
                     .then(data => {
-                        console.log("Image deleted");
+                        console.log("Type Image deleted");
                         this.setState({
                             category: '',
                             type: '',

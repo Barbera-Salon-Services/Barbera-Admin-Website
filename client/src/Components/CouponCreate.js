@@ -52,36 +52,41 @@ class CouponCreate extends Component {
         event.preventDefault();
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            const token = localStorage.getItem('token');
-            console.log(token); 
-            var data = {
-                serviceid: this.state.serviceId,
-                name: this.state.name,
-                discount: Number(this.state.discount),
-            };
-            const requestOptions = {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify(data)
-            };
-            await fetch('https://zlhjfiu498.execute-api.ap-south-1.amazonaws.com/Dev/couponcreate', requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Coupon Created");
-                    this.setState({
-                        name: '',
-                        discount: '0',
-                        touched: {
-                            name: false,
-                            discount: false,
-                        }
-                    });
-                    event.target.reset();
-                })
-                .catch(error => alert(error));
+            if(this.state.name === '' || this.state.discount === '') {
+                alert("Please fill the full form");
+                console.log("Submission Failed");
+            } else {
+                const token = localStorage.getItem('token');
+                console.log(token); 
+                var data = {
+                    serviceid: this.state.serviceId,
+                    name: this.state.name,
+                    discount: Number(this.state.discount),
+                };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                };
+                await fetch('https://zlhjfiu498.execute-api.ap-south-1.amazonaws.com/Dev/couponcreate', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Coupon Created");
+                        this.setState({
+                            name: '',
+                            discount: '0',
+                            touched: {
+                                name: false,
+                                discount: false,
+                            }
+                        });
+                        event.target.reset();
+                    })
+                    .catch(error => alert(error));
+            }
         } 
     }
 

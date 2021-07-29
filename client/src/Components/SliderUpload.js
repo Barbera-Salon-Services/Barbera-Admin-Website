@@ -68,7 +68,6 @@ class SliderUpload extends Component {
         console.log(event.target.value);
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-
             if(this.state.name === '' || this.state.image === ''){
                 alert('Please fill the full form.');
             } else {

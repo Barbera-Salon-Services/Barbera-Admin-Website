@@ -90,7 +90,7 @@ class TypeUpload extends Component {
                 await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/typeupload', requestOptions)
                     .then(response => response.json())
                     .then(data => {
-                        console.log("Image Uploaded");
+                        console.log("Type Image Uploaded");
                         this.setState({
                             category: '',
                             type: '',

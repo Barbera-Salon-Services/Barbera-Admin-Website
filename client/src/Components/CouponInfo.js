@@ -113,28 +113,33 @@ class CouponInfo extends Component {
         event.preventDefault();
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            const token = localStorage.getItem('token');
-            console.log(token); 
-            const serviceId = this.state.serviceId;
-            var data = {
-                couponname: this.state.couponName,
-                discount: Number(this.state.discount)
-            };
-            const requestOptions = {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify(data)
-            };
-            await fetch(`https://zlhjfiu498.execute-api.ap-south-1.amazonaws.com/Dev/updcoupon/${serviceId}`, requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Service added");
-                    this.getCoupon();
-                })
-                .catch(error => alert(error));
+            if(this.state.discount === '') {
+                alert("Please fill the full form");
+                console.log("Submission Failed");
+            } else {
+                const token = localStorage.getItem('token');
+                console.log(token); 
+                const serviceId = this.state.serviceId;
+                var data = {
+                    couponname: this.state.couponName,
+                    discount: Number(this.state.discount)
+                };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                };
+                await fetch(`https://zlhjfiu498.execute-api.ap-south-1.amazonaws.com/Dev/updcoupon/${serviceId}`, requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Coupon updated");
+                        this.getCoupon();
+                    })
+                    .catch(error => alert(error));
+            }
         } 
     }
 

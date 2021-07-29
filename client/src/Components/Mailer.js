@@ -77,7 +77,17 @@ class Mailer extends Component {
                 await fetch('https://xwtij1tqrc.execute-api.ap-south-1.amazonaws.com/Dev/sendmail', requestOptions)
                     .then(response => response.json())
                     .then(data => {
-                        console.log("Service added");
+                        console.log("Mail Sent");
+                        this.setState({
+                            to: 'user',
+                            subject: '',
+                            body: '',
+                            touched: {
+                                to: false,
+                                subject: false,
+                                body: false,
+                            }
+                        })
                     })
                     .catch(error => alert(error));
             }
