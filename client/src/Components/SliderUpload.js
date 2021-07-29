@@ -8,6 +8,7 @@ class SliderUpload extends Component {
         this.state = {
             name: '',
             image: '',
+            clickable: false,
             touched: {
                 name: false,
                 image: false,
@@ -68,14 +69,15 @@ class SliderUpload extends Component {
         console.log(event.target.value);
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            if(this.state.name === '' || this.state.image === ''){
+            if(this.state.name === '' || (this.state.image === '' && this.state.clickable === '')){
                 alert('Please fill the full form.');
             } else {
                 const token = localStorage.getItem('token');
                 console.log(token); 
                 var data = {
                     name: this.state.name,
-                    image: this.state.image
+                    image: this.state.image,
+                    clickable: this.state.clickable
                 };
                 const requestOptions = {
                     method: 'POST',
@@ -133,6 +135,20 @@ class SliderUpload extends Component {
                                 <FormFeedback>
                                     {errors.name}
                                 </FormFeedback>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="clickable" sm={2}>Clickable ?</Label>
+                            <Col sm={{ size: 10 }}>
+                            <FormGroup check>
+                                <Label check>
+                                <Input type="checkbox" id="clickable" 
+                                    name="clickable" 
+                                    onChange={this.handleInputChange} 
+                                />{' '}
+                                    Clickable
+                                </Label>
+                            </FormGroup>
                             </Col>
                         </FormGroup>
                         <FormGroup row>

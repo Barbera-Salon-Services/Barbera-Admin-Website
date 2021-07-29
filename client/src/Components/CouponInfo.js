@@ -12,8 +12,12 @@ class CouponInfo extends Component {
             serviceName: '',
             couponName: this.props.match.params.name,
             discount: '',
+            lowerlim: '',
+            upperlim: '',
+            userlim: '',
             touched: {
-                discount: false
+                discount: false,
+                lowerlim: false,
             }
         }
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -39,13 +43,17 @@ class CouponInfo extends Component {
         });
     }
 
-    validate(discount) {
+    validate(discount, lowerlim) {
         const errors = {
-            discount: ''
+            discount: '',
+            lowerlim: ''
         };
 
-        if(this.state.touched.discount && discount === '0')
-            errors.discount = 'Discount should not be 0';
+        if(this.state.touched.discount && discount.length === 0)
+            errors.discount = 'Discount should not be empty';
+
+        if(this.state.touched.lowerlim && lowerlim.length === 0)
+            errors.lowerlim = 'Discount should not be empty';
 
         return errors;
     }
@@ -73,7 +81,11 @@ class CouponInfo extends Component {
                     console.log(data.data);
                     this.setState({
                         serviceName: data.data.service.name,
-                        discount: data.data.discount
+                        discount: data.data.discount,
+                        lowerlim: data.data.lower_price_limit,
+                        upperlim: (data.data.upper_price_limit === -1) ? '' : data.data.upper_price_limit,
+                        userlim: (data.data.user_limit === -1) ? '' : data.data.user_limit, 
+
                     });
                 })
                 .catch(error => alert(error));
@@ -122,7 +134,10 @@ class CouponInfo extends Component {
                 const serviceId = this.state.serviceId;
                 var data = {
                     couponname: this.state.couponName,
-                    discount: Number(this.state.discount)
+                    discount: Number(this.state.discount),
+                    upperlimit: Number(this.state.upperlim),
+                    lowerlimit: Number(this.state.lowerlim),
+                    userlimit: Number(this.state.userlim)
                 };
                 const requestOptions = {
                     method: 'POST',
@@ -147,7 +162,7 @@ class CouponInfo extends Component {
 
         console.log(this.state);
         
-        const errors = this.validate(this.state.discount );
+        const errors = this.validate(this.state.discount, this.state.lowerlim );
 
         return (
             <>
@@ -194,6 +209,42 @@ class CouponInfo extends Component {
                                 <FormFeedback>
                                     {errors.discount}
                                 </FormFeedback>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="upperlim" sm={2}>Upper Price Limit</Label>
+                            <Col sm={10}>
+                                <Input type="text" id="upperlim" 
+                                    name="upperlim" 
+                                    value={this.state.upperlim} 
+                                    onChange={this.handleInputChange} 
+                                />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="lowerlim" sm={2}>Lower Price Limit</Label>
+                            <Col sm={10}>
+                                <Input type="text" id="lowerlim" 
+                                    name="lowerlim"
+                                    valid={errors.lowerlim === ''}
+                                    invalid={errors.lowerlim !== ''}  
+                                    value={this.state.lowerlim} 
+                                    onChange={this.handleInputChange} 
+                                    onBlur={this.handleBlur('lowerlim')}
+                                />
+                                <FormFeedback>
+                                    {errors.lowerlim}
+                                </FormFeedback>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="userlim" sm={2}>User Limit</Label>
+                            <Col sm={10}>
+                                <Input type="text" id="userlim" 
+                                    name="userlim" 
+                                    value={this.state.userlim} 
+                                    onChange={this.handleInputChange} 
+                                />
                             </Col>
                         </FormGroup>
                         <FormGroup check row style={{paddingLeft: '0px'}}>

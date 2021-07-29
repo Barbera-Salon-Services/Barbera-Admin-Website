@@ -8,10 +8,14 @@ class CouponCreate extends Component {
         this.state = {
             serviceId: this.props.match.params.serviceId,
             name: '',
-            discount: '0',
+            discount: '',
+            upperpricelim: '',
+            lowerpricelim: '',
+            userlim: '',
             touched: {
                 name: false,
                 discount: false,
+                lowerpricelim: false,
             }
         }
     }
@@ -33,17 +37,21 @@ class CouponCreate extends Component {
         });
     }
 
-    validate(name, discount) {
+    validate(name, discount, lowerpricelim) {
         const errors = {
             name: '',
-            discount: ''
+            discount: '',
+            lowerpricelim: ''
         };
 
         if(this.state.touched.name && name.length === 0)
             errors.name = 'Coupon Name should not be empty';
 
-        if(this.state.touched.discount && discount === '0')
-            errors.discount = 'Discount should be greater than 0';
+        if(this.state.touched.discount && discount.length === 0)
+            errors.discount = 'Discount should not be empty';
+
+        if(this.state.touched.lowerpricelim && lowerpricelim.length === 0)
+            errors.lowerpricelim = 'Lower Price Limit should not be empty';
 
         return errors;
     }
@@ -52,7 +60,7 @@ class CouponCreate extends Component {
         event.preventDefault();
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            if(this.state.name === '' || this.state.discount === '') {
+            if(this.state.name === '' || this.state.discount === '' || this.state.lowerpricelim === '') {
                 alert("Please fill the full form");
                 console.log("Submission Failed");
             } else {
@@ -62,6 +70,9 @@ class CouponCreate extends Component {
                     serviceid: this.state.serviceId,
                     name: this.state.name,
                     discount: Number(this.state.discount),
+                    lowerlimit: Number(this.state.lowerpricelim),
+                    upperlimit: Number(this.state.upperpricelim),
+                    userlimit: Number(this.state.userlim)
                 };
                 const requestOptions = {
                     method: 'POST',
@@ -77,10 +88,14 @@ class CouponCreate extends Component {
                         console.log("Coupon Created");
                         this.setState({
                             name: '',
-                            discount: '0',
+                            discount: '',
+                            upperpricelim: '',
+                            lowerpricelim: '',
+                            userlim: '',
                             touched: {
                                 name: false,
                                 discount: false,
+                                lowerpricelim: false,
                             }
                         });
                         event.target.reset();
@@ -96,7 +111,7 @@ class CouponCreate extends Component {
 
         console.log(this.state);
 
-        const errors = this.validate(this.state.name, this.state.discount);
+        const errors = this.validate(this.state.name, this.state.discount, this.state.lowerpricelim);
 
         return(
             <div className="container">
@@ -124,7 +139,7 @@ class CouponCreate extends Component {
                     <FormGroup row>
                         <Label for="discount" sm={2}>Discount Amount</Label>
                         <Col sm={5}>
-                            <Input type="number" id="discount" 
+                            <Input type="text" id="discount" 
                                 name="discount" 
                                 placeholder="Discount Amount"
                                 valid={errors.discount === ''}
@@ -136,6 +151,45 @@ class CouponCreate extends Component {
                             <FormFeedback>
                                 {errors.discount}
                             </FormFeedback>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="upperpricelim" sm={2}>Upper Price Limit</Label>
+                        <Col sm={5}>
+                            <Input type="text" id="upperpricelim" 
+                                name="upperpricelim" 
+                                placeholder="Upper Price Limit" 
+                                value={this.state.upperpricelim} 
+                                onChange={this.handleInputChange}  
+                            />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="lowerpricelim" sm={2}>Lower Price Limit</Label>
+                        <Col sm={5}>
+                            <Input type="text" id="lowerpricelim" 
+                                name="lowerpricelim" 
+                                placeholder="Lower Price Limit"
+                                valid={errors.lowerpricelim === ''}
+                                invalid={errors.lowerpricelim !== ''} 
+                                value={this.state.lowerpricelim} 
+                                onChange={this.handleInputChange} 
+                                onBlur={this.handleBlur('lowerpricelim')} 
+                            />
+                            <FormFeedback>
+                                {errors.lowerpricelim}
+                            </FormFeedback>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="userlim" sm={2}>User Limit</Label>
+                        <Col sm={5}>
+                            <Input type="text" id="userlim" 
+                                name="userlim" 
+                                placeholder="User Limit" 
+                                value={this.state.userlim} 
+                                onChange={this.handleInputChange} 
+                            />
                         </Col>
                     </FormGroup>
                     <FormGroup check row style={{paddingLeft: '0px'}}>

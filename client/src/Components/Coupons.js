@@ -4,7 +4,7 @@ import { Media } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 
 function RenderCoupon({ coupon }) {
-    const url = '/coupon/' + coupon.name + '/' + coupon.service.id;
+    const url = '/coupon/' + coupon.name + '/' + coupon.serviceId;
 
     return (
         <Button href={url} variant="outline-secondary" size="lg">
@@ -59,9 +59,12 @@ class Coupons extends Component {
         console.log("body");
         console.log("token",localStorage.getItem('token'))
         
+        var i = 0;
+
         const coupons = this.state.coupons.map((coupon) => {
+            i++;
             return (
-                <RenderCoupon key={coupon.service.id} coupon={coupon} />
+                <RenderCoupon key={i} coupon={coupon} />
             );
         });
 
@@ -72,6 +75,9 @@ class Coupons extends Component {
                     <div className="row row-content">
                         <div className="col-12">
                             <h2>Coupons</h2>
+                            <Button href="/coupons/all" variant="info" size="lg" style={{float: 'right'}}>
+                                Add Coupon for all Services
+                            </Button>
                         </div>
                         <div className="col-12 col-md m-1">
                             <Media list>
