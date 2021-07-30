@@ -13,6 +13,7 @@ import AddCoins from './AddCoins';
 import CouponCreate from './CouponCreate';
 import Coupons from './Coupons';
 import CouponInfo from './CouponInfo';
+import BarberLog from './BarberLog';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { LoginPhone, LoginOtp } from '../Functions/login';
 
@@ -29,6 +30,7 @@ class Main extends Component {
             <Header loginphone={LoginPhone} loginotp={LoginOtp}/>
             <Switch>
                 <Route path="/home" component={() => <Home />} />  
+                <Route path="/barbers/:barber" component={(props) => <BarberLog {...props}/>} />
                 <Route exact path="/services" component={() => <AllServices />} />
                 <Route exact path="/services/sliderupload" component={(props) => <SliderUpload {...props}/>} />
                 <Route exact path="/services/sliderdelete" component={(props) => <SliderDelete {...props}/>} />

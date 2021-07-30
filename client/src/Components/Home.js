@@ -1,24 +1,36 @@
 import React, { Component } from 'react';
 import BarChart from './BarChart';
+import { Button } from 'react-bootstrap';
+import { Media } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
+
+function RenderBarber({ barber }) {
+    const url = '/barbers/' + barber.id + ',' + barber.name + ',' + barber.phone;
+
+    return (
+        <Button href={url} variant="outline-secondary" size="lg">
+            <div style={{textAlign: 'left'}}>{barber.name} ({barber.phone})</div>
+            <div style={{textAlign: 'right'}}><i className="fa fa-arrow-right"></i></div>
+        </Button>
+    );
+}
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            barbers: {},
-            logs: {},
-            ids: []
+            barbers: []
         }
     }
 
     componentDidMount() {
         if(localStorage.getItem('token')){
             console.log(this.state);
-            this.getLogs();
+            this.getBarbers();
         } 
     }
 
-    getLogs = async() => {
+    getBarbers = async() => {
         if(localStorage.getItem('token') !== null){
             const token = localStorage.getItem('token');
             console.log(token); 
@@ -29,14 +41,12 @@ class Home extends Component {
                     'Authorization': 'Bearer ' + token
                 }
             };
-            await fetch(`https://xwtij1tqrc.execute-api.ap-south-1.amazonaws.com/Dev/getlogs`, requestOptions)
+            await fetch(`https://xwtij1tqrc.execute-api.ap-south-1.amazonaws.com/Dev/getbarbs`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
                     this.setState({
-                        barbers: data.barbers,
-                        logs: data.logs,
-                        ids: data.ids 
+                        barbers: data.data,
                     });
                 })
                 .catch(error => alert(error));
@@ -45,41 +55,36 @@ class Home extends Component {
 
     render() {
 
-        console.log(this.state.ids);
-        console.log(this.state.logs);
-        console.log(this.state.barbers);
-
-        const logs = this.state.ids.map((id) => {
-
-            var dates = [];
-            var distances = [];
-
-            for(var i=0; i<this.state.logs[id].length; i++) {
-                dates.push(this.state.logs[id][i].date);
-                distances.push(this.state.logs[id][i].distance);
-            }
-
+        console.log("body");
+        console.log("token",localStorage.getItem('token'))
+        
+        const barbers = this.state.barbers.map((barber) => {
             return (
-                <BarChart distances={distances} dates={dates} barber={this.state.barbers[id]} key={id} />
+                <RenderBarber key={barber.id} barber={barber} />
             );
         });
 
         return (
-            <div className="container">
-                { 
+            <>
+                {
                     localStorage.getItem('token') ? 
-                    <>
-                        <div style={{paddingTop: '5%'}}>
-                            <h2>
-                                Dashboard
-                            </h2>
+                    <div className="container">
+                        <div className="row row-content">
+                            <div className="col-12">
+                                <h2>Barbers</h2>
+                            </div>
+                            <div className="col-12 col-md m-1">
+                                <Media list>
+                                    <div className="d-grid gap-2">
+                                        <br />
+                                        {this.state.barbers.length !== 0 ? barbers : null}
+                                    </div>
+                                </Media>
+                            </div>
                         </div>
-                        {this.state.ids.length !== 0 ? logs : null}
-                    </>
-                    :
-                    null
+                    </div> : null
                 }
-            </div>
+            </>
         );
     }
 }

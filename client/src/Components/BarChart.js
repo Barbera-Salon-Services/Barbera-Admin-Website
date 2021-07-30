@@ -6,7 +6,7 @@ class BarChart extends Component {
     super(props);
     this.state = {
       series: [{
-        name: 'distance',
+        name: 'distance travelled',
         data: this.props.distances
       }],
       options: {
@@ -74,7 +74,7 @@ class BarChart extends Component {
           }
         },
         title: {
-          text: `Distance travelled by ${this.props.barber.phone}`,
+          text: `Distance travelled by ${this.props.name} (${this.props.phone})`,
           floating: true,
           offsetY: 330,
           align: 'center',
@@ -91,8 +91,6 @@ class BarChart extends Component {
     
 
     render() {
-
-
 
       return (
           <div className="container" style={{paddingTop: '5%'}}>
