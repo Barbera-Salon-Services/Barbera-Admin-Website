@@ -94,6 +94,7 @@ class SliderUpload extends Component {
                         this.setState({
                             name: '',
                             image: '',
+                            clickable: false,
                             touched: {
                                 name: false,
                                 image: false,
@@ -144,6 +145,7 @@ class SliderUpload extends Component {
                                 <Label check>
                                 <Input type="checkbox" id="clickable" 
                                     name="clickable" 
+                                    checked={this.state.clickable}
                                     onChange={this.handleInputChange} 
                                 />{' '}
                                     Clickable

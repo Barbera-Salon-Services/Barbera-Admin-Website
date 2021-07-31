@@ -159,6 +159,7 @@ class TypeUpload extends Component {
                                 <Label check>
                                 <Input type="checkbox" id="tab" 
                                     name="tab" 
+                                    checked={this.state.tab}
                                     onChange={this.handleInputChange} 
                                 />{' '}
                                     Tabs
@@ -172,6 +173,7 @@ class TypeUpload extends Component {
                             <Input type="file" name="file" 
                                 id="file" 
                                 accept=".jpeg, .png, .jpg"
+                                value={this.state.image}
                                 onChange={this.onChange}
                             />
                             <FormText color="muted">

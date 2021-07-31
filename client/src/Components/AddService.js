@@ -268,6 +268,7 @@ class AddService extends Component {
                                 <Label check>
                                 <Input type="checkbox" id="trending" 
                                     name="trending" 
+                                    checked={this.state.trending}
                                     onChange={this.handleInputChange} 
                                 />{' '}
                                     Trending
@@ -282,6 +283,7 @@ class AddService extends Component {
                                 <Label check>
                                 <Input type="checkbox" id="dod" 
                                     name="dod"
+                                    checked={this.state.dod}
                                     onChange={this.handleInputChange} 
                                 />{' '}
                                     Deal of the Day

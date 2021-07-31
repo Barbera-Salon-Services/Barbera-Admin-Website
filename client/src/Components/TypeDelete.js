@@ -130,6 +130,7 @@ class TypeDelete extends Component {
                                 <Label check>
                                 <Input type="checkbox" id="tab" 
                                     name="tab" 
+                                    checked={this.state.tab}
                                     onChange={this.handleInputChange} 
                                 />{' '}
                                     Tabs
