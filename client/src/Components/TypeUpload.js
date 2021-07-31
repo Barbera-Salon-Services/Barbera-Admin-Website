@@ -9,6 +9,7 @@ class TypeUpload extends Component {
             category: '',
             type: '',
             image: '',
+            tab: false,
             touched: {
                 category: false,
                 image: false,
@@ -78,6 +79,7 @@ class TypeUpload extends Component {
                     category: this.state.category,
                     type: this.state.type ? this.state.type : null,
                     image: this.state.image,
+                    tab: this.state.tab
                 };
                 const requestOptions = {
                     method: 'POST',
@@ -95,6 +97,7 @@ class TypeUpload extends Component {
                             category: '',
                             type: '',
                             image: '',
+                            tab: false,
                             touched: {
                                 category: false,
                                 image: false,
@@ -147,6 +150,20 @@ class TypeUpload extends Component {
                                     value={this.state.type} 
                                     onChange={this.handleInputChange} 
                                 />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="tab" sm={2}>Tabs</Label>
+                            <Col sm={{ size: 10 }}>
+                            <FormGroup check>
+                                <Label check>
+                                <Input type="checkbox" id="tab" 
+                                    name="tab" 
+                                    onChange={this.handleInputChange} 
+                                />{' '}
+                                    Tabs
+                                </Label>
+                            </FormGroup>
                             </Col>
                         </FormGroup>
                         <FormGroup row>

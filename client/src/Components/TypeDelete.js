@@ -8,6 +8,7 @@ class TypeDelete extends Component {
         this.state = {
             category: '',
             type: '',
+            tab: false,
             touched: {
                 category: false,
             }
@@ -51,6 +52,7 @@ class TypeDelete extends Component {
                 var data = {
                     category: this.state.category,
                     type: this.state.type,
+                    tab: this.state.tab
                 };
                 const requestOptions = {
                     method: 'POST',
@@ -67,6 +69,7 @@ class TypeDelete extends Component {
                         this.setState({
                             category: '',
                             type: '',
+                            tab: false,
                             touched: {
                                 category: false,
                             }
@@ -118,6 +121,20 @@ class TypeDelete extends Component {
                                     value={this.state.type} 
                                     onChange={this.handleInputChange} 
                                 />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="tab" sm={2}>Tabs</Label>
+                            <Col sm={{ size: 10 }}>
+                            <FormGroup check>
+                                <Label check>
+                                <Input type="checkbox" id="tab" 
+                                    name="tab" 
+                                    onChange={this.handleInputChange} 
+                                />{' '}
+                                    Tabs
+                                </Label>
+                            </FormGroup>
                             </Col>
                         </FormGroup>
                         <FormGroup check row style={{paddingLeft: '0px'}}>
