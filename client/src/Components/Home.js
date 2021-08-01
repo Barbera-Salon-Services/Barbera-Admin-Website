@@ -41,7 +41,7 @@ class Home extends Component {
                     'Authorization': 'Bearer ' + token
                 }
             };
-            await fetch(`https://xwtij1tqrc.execute-api.ap-south-1.amazonaws.com/Dev/getbarbs`, requestOptions)
+            await fetch(`https://le2fpw7qj8.execute-api.ap-south-1.amazonaws.com/Prod/getbarbs`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);

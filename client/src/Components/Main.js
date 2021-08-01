@@ -14,6 +14,7 @@ import CouponCreate from './CouponCreate';
 import Coupons from './Coupons';
 import CouponInfo from './CouponInfo';
 import BarberLog from './BarberLog';
+import ChangeRadius from './ChangeRadius';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { LoginPhone, LoginOtp } from '../Functions/login';
 
@@ -42,6 +43,7 @@ class Main extends Component {
                 <Route exact path="/coupon/:name/:serviceId" component={(props) => <CouponInfo {...props}/>} />
                 <Route path="/coupons/:serviceId" component={(props) => <CouponCreate {...props}/>} />
                 <Route path="/mailer" component={() => <Mailer />} />
+                <Route path="/radius" component={() => <ChangeRadius />} />
                 <Route path="/coininc" component={() => <AddCoins />} />
                 <Redirect to="/home" />
             </Switch>

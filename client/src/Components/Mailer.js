@@ -74,7 +74,7 @@ class Mailer extends Component {
                     },
                     body: JSON.stringify(data)
                 };
-                await fetch('https://xwtij1tqrc.execute-api.ap-south-1.amazonaws.com/Dev/sendmail', requestOptions)
+                await fetch('https://le2fpw7qj8.execute-api.ap-south-1.amazonaws.com/Prod/sendmail', requestOptions)
                     .then(response => response.json())
                     .then(data => {
                         console.log("Mail Sent");
