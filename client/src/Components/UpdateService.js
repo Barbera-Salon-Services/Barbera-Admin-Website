@@ -129,7 +129,7 @@ class UpdateService extends Component {
             await fetch(`https://897izsv5m6.execute-api.ap-south-1.amazonaws.com/Prod/delservice/${serviceId}`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Service added");
+                    console.log("Service deleted");
                     this.props.history.push('/services');
                 })
                 .catch(error => alert(error));

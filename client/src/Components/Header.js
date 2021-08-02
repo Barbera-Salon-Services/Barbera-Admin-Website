@@ -176,6 +176,11 @@ class Header extends Component {
                                                 <span className="fa fa-street-view fa-lg"></span> Booking Radius
                                             </NavLink>
                                         </NavItem> 
+                                        <NavItem>
+                                            <NavLink className="nav-link" to="/offers">
+                                                <span className="fa fa-percent fa-lg"></span> Offers
+                                            </NavLink>
+                                        </NavItem>
                                     </>
                                     :
                                     null

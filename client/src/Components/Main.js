@@ -15,6 +15,9 @@ import Coupons from './Coupons';
 import CouponInfo from './CouponInfo';
 import BarberLog from './BarberLog';
 import ChangeRadius from './ChangeRadius';
+import Offers from './Offers';
+import AddOffer from './AddOffer';
+import UpdateOffer from './UpdateOffer';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { LoginPhone, LoginOtp } from '../Functions/login';
 
@@ -33,6 +36,9 @@ class Main extends Component {
                 <Route path="/home" component={() => <Home />} />  
                 <Route path="/barbers/:barber" component={(props) => <BarberLog {...props}/>} />
                 <Route exact path="/services" component={() => <AllServices />} />
+                <Route exact path="/offers" component={() => <Offers />} />
+                <Route exact path="/offers/addoffer" component={() => <AddOffer />} />
+                <Route exact path="/offers/:name/:serviceId" component={(props) => <UpdateOffer {...props}/>} />
                 <Route exact path="/services/sliderupload" component={(props) => <SliderUpload {...props}/>} />
                 <Route exact path="/services/sliderdelete" component={(props) => <SliderDelete {...props}/>} />
                 <Route exact path="/services/typeupload" component={(props) => <TypeUpload {...props}/>} />
