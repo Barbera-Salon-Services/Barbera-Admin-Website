@@ -87,7 +87,7 @@ class SliderUpload extends Component {
                     },
                     body: JSON.stringify(data)
                 };
-                await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/sliderupload', requestOptions)
+                await fetch('https://897izsv5m6.execute-api.ap-south-1.amazonaws.com/Prod/sliderupload', requestOptions)
                     .then(response => response.json())
                     .then(data => {
                         console.log("Slider added");

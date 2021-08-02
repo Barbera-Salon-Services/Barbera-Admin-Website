@@ -39,7 +39,7 @@ class AllServices extends Component {
                     'Authorization': 'Bearer ' + token
                 }
             };
-            await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/getallservname', requestOptions)
+            await fetch('https://897izsv5m6.execute-api.ap-south-1.amazonaws.com/Prod/getallservname', requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);

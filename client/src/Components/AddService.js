@@ -98,7 +98,7 @@ class AddService extends Component {
                     },
                     body: JSON.stringify(data)
                 };
-                await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/addservice', requestOptions)
+                await fetch('https://897izsv5m6.execute-api.ap-south-1.amazonaws.com/Prod/addservice', requestOptions)
                     .then(response => response.json())
                     .then(data => {
                         console.log("Service added");

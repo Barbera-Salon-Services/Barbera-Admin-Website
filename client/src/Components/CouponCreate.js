@@ -82,7 +82,7 @@ class CouponCreate extends Component {
                     },
                     body: JSON.stringify(data)
                 };
-                await fetch('https://zlhjfiu498.execute-api.ap-south-1.amazonaws.com/Dev/couponcreate', requestOptions)
+                await fetch('https://z9t3sasx3e.execute-api.ap-south-1.amazonaws.com/Prod/couponcreate', requestOptions)
                     .then(response => response.json())
                     .then(data => {
                         console.log("Coupon Created");

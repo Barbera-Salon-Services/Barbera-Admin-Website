@@ -61,7 +61,7 @@ class CoinIncrease extends Component {
                 },
                 body: JSON.stringify(data)
             };
-            await fetch('https://0dy1hsrsu8.execute-api.ap-south-1.amazonaws.com/Dev/coininc', requestOptions)
+            await fetch('https://we4imgw2ie.execute-api.ap-south-1.amazonaws.com/Prod/coininc', requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Coins Added");

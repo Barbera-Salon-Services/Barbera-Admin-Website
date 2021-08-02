@@ -74,7 +74,7 @@ class CouponInfo extends Component {
                 },
                 body: JSON.stringify(data)
             };
-            await fetch(`https://zlhjfiu498.execute-api.ap-south-1.amazonaws.com/Dev/getcoupon/${serviceId}`, requestOptions)
+            await fetch(`https://z9t3sasx3e.execute-api.ap-south-1.amazonaws.com/Prod/getcoupon/${serviceId}`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -111,7 +111,7 @@ class CouponInfo extends Component {
                 },
                 body: JSON.stringify(data)
             };
-            await fetch(`https://zlhjfiu498.execute-api.ap-south-1.amazonaws.com/Dev/delcoupon`, requestOptions)
+            await fetch(`https://z9t3sasx3e.execute-api.ap-south-1.amazonaws.com/Prod/delcoupon`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Coupon deleted");
@@ -147,7 +147,7 @@ class CouponInfo extends Component {
                     },
                     body: JSON.stringify(data)
                 };
-                await fetch(`https://zlhjfiu498.execute-api.ap-south-1.amazonaws.com/Dev/updcoupon/${serviceId}`, requestOptions)
+                await fetch(`https://z9t3sasx3e.execute-api.ap-south-1.amazonaws.com/Prod/updcoupon/${serviceId}`, requestOptions)
                     .then(response => response.json())
                     .then(data => {
                         console.log("Coupon updated");

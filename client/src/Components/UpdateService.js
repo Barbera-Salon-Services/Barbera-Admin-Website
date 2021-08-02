@@ -50,7 +50,7 @@ class UpdateService extends Component {
                     'Authorization': 'Bearer ' + token
                 }
             };
-            await fetch(`https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/getservbyid/${serviceId}`, requestOptions)
+            await fetch(`https://897izsv5m6.execute-api.ap-south-1.amazonaws.com/Prod/getservbyid/${serviceId}`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Services Received");
@@ -126,7 +126,7 @@ class UpdateService extends Component {
                     'Authorization': 'Bearer ' + token
                 }
             };
-            await fetch(`https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/delservice/${serviceId}`, requestOptions)
+            await fetch(`https://897izsv5m6.execute-api.ap-south-1.amazonaws.com/Prod/delservice/${serviceId}`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Service added");
@@ -167,7 +167,7 @@ class UpdateService extends Component {
                     },
                     body: JSON.stringify(data)
                 };
-                await fetch('https://r54kj5iekh.execute-api.ap-south-1.amazonaws.com/Dev/updateservice', requestOptions)
+                await fetch('https://897izsv5m6.execute-api.ap-south-1.amazonaws.com/Prod/updateservice', requestOptions)
                     .then(response => response.json())
                     .then(data => {
                         console.log("Service updated");
