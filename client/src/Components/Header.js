@@ -12,22 +12,28 @@ class Header extends Component {
         this.state = {
             isLoggedIn: (localStorage.getItem('token') === null) ? false : true,
             isNavOpen: false,
-            isDropOpen: false,
-            isPhoneModalOpen: false,
-            isOtpModalOpen: false,
+            isDropOpen1: false,
+            isDropOpen2: false,
+            isEmailModalOpen: false,
+            isPassModalOpen: false,
         };
-        this.toggleDropdown = this.toggleDropdown.bind(this);
         this.toggleNav = this.toggleNav.bind(this);
-        this.toggleModalPhone = this.toggleModalPhone.bind(this);
-        this.toggleModalOtp = this.toggleModalOtp.bind(this);
-        this.handleLoginPhone = this.handleLoginPhone.bind(this);
-        this.handleLoginOtp = this.handleLoginOtp.bind(this);
+        this.toggleModalEmail = this.toggleModalEmail.bind(this);
+        this.toggleModalPass = this.toggleModalPass.bind(this);
+        this.handleLoginEmail = this.handleLoginEmail.bind(this);
+        this.handleLoginPass = this.handleLoginPass.bind(this);
         this.Logout= this.Logout.bind(this);
     }
 
-    toggleDropdown() {
+    toggleDropdown1 = () => {
         this.setState({
-            isDropOpen: !this.state.isDropOpen
+            isDropOpen1: !this.state.isDropOpen1
+        });
+    }
+
+    toggleDropdown2 = () => {
+        this.setState({
+            isDropOpen2: !this.state.isDropOpen2
         });
     }
 
@@ -37,15 +43,15 @@ class Header extends Component {
         });
     }
 
-    toggleModalPhone() {
+    toggleModalEmail() {
         this.setState({
-            isPhoneModalOpen: !this.state.isPhoneModalOpen
+            isEmailModalOpen: !this.state.isEmailModalOpen
         });
     }
 
-    toggleModalOtp() {
+    toggleModalPass() {
         this.setState({
-            isOtpModalOpen: !this.state.isOtpModalOpen
+            isPassModalOpen: !this.state.isPassModalOpen
         });
     }
 
@@ -57,35 +63,35 @@ class Header extends Component {
         event.preventDefault();
     }
 
-    handleLoginPhone(event) {
-        if(this.phone.value === '' || this.phone.value === null){
-            alert('No phone number was entered');
+    handleLoginEmail(event) {
+        if(this.email.value === '' || this.email.value === null){
+            alert('No email was entered');
             event.preventDefault();
         } else {
-            this.toggleModalPhone();
-            this.toggleModalOtp();
-            console.log("Phone: " + this.phone.value );
+            this.toggleModalEmail();
+            this.toggleModalPass();
+            console.log("Email: " + this.email.value );
             const data = {
-                phone: this.phone.value,
+                email: this.email.value,
                 mode: 'web'
             };
-            this.props.loginphone(data);
+            this.props.loginemail(data);
             event.preventDefault();
         }
     }
 
-    handleLoginOtp(event) {
-        if(this.otp.value === '' || this.otp.value === null){
-            alert('No otp sent');
+    handleLoginPass(event) {
+        if(this.password.value === '' || this.password.value === null){
+            alert('No password entered');
             event.preventDefault();
         } else {
-            this.toggleModalOtp();
-            console.log("OTP: " + this.otp.value);
+            this.toggleModalPass();
+            console.log("OTP: " + this.password.value);
             var data = {
-                otp: this.otp.value,
+                password: this.password.value,
                 role: 'admin'
             }
-            var login = this.props.loginotp(data);
+            var login = this.props.loginpass(data);
             if(login) {
                 this.setState({
                     isLoggedIn: true
@@ -118,7 +124,12 @@ class Header extends Component {
                                 {
                                     this.state.isLoggedIn ? 
                                     <>
-                                        <Dropdown nav isOpen={this.state.isDropOpen} toggle={this.toggleDropdown}>
+                                        <NavItem>
+                                            <NavLink className="nav-link" to="/addadmin">
+                                                <span className="fa fa-user-plus fa-lg"></span> Add Admin
+                                            </NavLink>
+                                        </NavItem>
+                                        <Dropdown nav isOpen={this.state.isDropOpen1} toggle={this.toggleDropdown1}>
                                             <DropdownToggle nav caret>
                                                 <span className="fa fa-info fa-lg"></span> Services
                                             </DropdownToggle>
@@ -189,15 +200,28 @@ class Header extends Component {
                             { 
                                 this.state.isLoggedIn ?
                                 <Nav className="ml-auto" navbar style={{marginLeft: 'auto'}}>
-                                    <NavItem>
-                                        <Button outline onClick={this.Logout}>
-                                            <span className="fa fa-sign-in fa-lg"></span> Logout
-                                        </Button>
-                                    </NavItem>
+                                    <Dropdown nav isOpen={this.state.isDropOpen2} toggle={this.toggleDropdown2}>
+                                        <DropdownToggle nav caret>
+                                            <span className="fa fa-user-circle fa-lg" style={{color: "whitesmoke"}}></span>
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            <DropdownItem>
+                                                <NavLink className="nav-link" to="/pass" style={{color: 'blue'}}>
+                                                    Reset Password
+                                                </NavLink>
+                                            </DropdownItem>
+                                            <DropdownItem divider></DropdownItem>
+                                            <DropdownItem>
+                                                <NavLink className="nav-link" to="/home" onClick={this.Logout} style={{color: 'blue'}}>
+                                                    Logout
+                                                </NavLink>
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
                                 </Nav> : 
                                 <Nav className="ml-auto" navbar style={{marginLeft: 'auto'}}>
                                     <NavItem>
-                                        <Button outline onClick={this.toggleModalPhone}>
+                                        <Button outline onClick={this.toggleModalEmail}>
                                             <span className="fa fa-sign-in fa-lg"></span> Login/Signup
                                         </Button>
                                     </NavItem>
@@ -206,28 +230,28 @@ class Header extends Component {
                         </Collapse>
                     </div>
                 </Navbar>
-                <Modal isOpen={this.state.isPhoneModalOpen} toggle={this.toggleModalPhone}>
-                    <ModalHeader toggle={this.toggleModalPhone}>Login</ModalHeader>
+                <Modal isOpen={this.state.isEmailModalOpen} toggle={this.toggleModalEmail}>
+                    <ModalHeader toggle={this.toggleModalEmail}>Login</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={this.handleLoginPhone}>
+                        <Form onSubmit={this.handleLoginEmail}>
                             <FormGroup>
-                                <Label htmlFor="phone">Phone No.</Label>
-                                <Input type="text" id="phone" name="phone" 
-                                    innerRef={(input) => this.phone = input }
+                                <Label htmlFor="email">Email</Label>
+                                <Input type="text" id="email" name="email" 
+                                    innerRef={(input) => this.email = input }
                                 />
                             </FormGroup>
                             <Button type="submit" value="submit" color="primary">Submit</Button>
                         </Form>
                     </ModalBody>
                 </Modal>
-                <Modal isOpen={this.state.isOtpModalOpen} toggle={this.toggleModalOtp}>
-                    <ModalHeader toggle={this.toggleModalOtp}>Login</ModalHeader>
+                <Modal isOpen={this.state.isPassModalOpen} toggle={this.toggleModalPass}>
+                    <ModalHeader toggle={this.toggleModalPass}>Login</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={this.handleLoginOtp}>
+                        <Form onSubmit={this.handleLoginPass}>
                             <FormGroup>
-                                <Label htmlFor="otp">OTP</Label>
-                                <Input type="password" id="otp" name="otp" 
-                                    innerRef={(input) => this.otp = input }/>
+                                <Label htmlFor="password">Password</Label>
+                                <Input type="password" id="password" name="password" 
+                                    innerRef={(input) => this.password = input }/>
                             </FormGroup>
                             <Button type="submit" value="submit" color="primary">Login/Signup</Button>
                         </Form>

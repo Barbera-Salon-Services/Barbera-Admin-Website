@@ -15,11 +15,14 @@ import Coupons from './Coupons';
 import CouponInfo from './CouponInfo';
 import BarberLog from './BarberLog';
 import ChangeRadius from './ChangeRadius';
+import ChangeRef from './ChangeRef';
 import Offers from './Offers';
 import AddOffer from './AddOffer';
+import AddAdmin from './AddAdmin';
 import UpdateOffer from './UpdateOffer';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { LoginPhone, LoginOtp } from '../Functions/login';
+import { LoginEmail, LoginPass } from '../Functions/login';
+import ResetPassword from './ResetPassword';
 
 class Main extends Component {
 
@@ -31,7 +34,7 @@ class Main extends Component {
 
     return (
         <div>
-            <Header loginphone={LoginPhone} loginotp={LoginOtp}/>
+            <Header loginemail={LoginEmail} loginpass={LoginPass}/>
             <Switch>
                 <Route path="/home" component={() => <Home />} />  
                 <Route path="/barbers/:barber" component={(props) => <BarberLog {...props}/>} />
@@ -50,7 +53,10 @@ class Main extends Component {
                 <Route path="/coupons/:serviceId" component={(props) => <CouponCreate {...props}/>} />
                 <Route path="/mailer" component={() => <Mailer />} />
                 <Route path="/radius" component={() => <ChangeRadius />} />
+                <Route path="/ref" component={() => <ChangeRef />} />
                 <Route path="/coininc" component={() => <AddCoins />} />
+                <Route path="/pass" component={() => <ResetPassword />} />
+                <Route path="/addadmin" component={() => <AddAdmin />} />
                 <Redirect to="/home" />
             </Switch>
             {/* <Footer /> */}

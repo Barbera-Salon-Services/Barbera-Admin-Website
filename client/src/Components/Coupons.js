@@ -75,9 +75,14 @@ class Coupons extends Component {
                     <div className="row row-content">
                         <div className="col-12">
                             <h2>Coupons</h2>
-                            <Button href="/coupons/all" variant="info" size="lg" style={{float: 'right'}}>
-                                Add Coupon for all Services
-                            </Button>
+                            <div style={{textAlign: 'right'}}>
+                                <Button href="/coupons/all" variant="info" size="lg">
+                                    Add Coupon for all Services
+                                </Button>{'  '}
+                                <Button href="/ref" variant="info" size="lg" >
+                                    Ref Coupon
+                                </Button>
+                            </div>
                         </div>
                         <div className="col-12 col-md m-1">
                             <Media list>

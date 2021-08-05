@@ -1,18 +1,18 @@
-export const LoginPhone = async (data) => {
+export const LoginEmail = async (data) => {
     try {
-        console.log("In login phone auth");
+        console.log("In login email auth");
         console.log(data);
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         };
-        await fetch('https://fma7xvauo3.execute-api.ap-south-1.amazonaws.com/Dev/loginphone', requestOptions)
+        await fetch('https://le2fpw7qj8.execute-api.ap-south-1.amazonaws.com/Prod/loginemail', requestOptions)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                localStorage.setItem('phonetoken',data.token);
-                console.log("OTP sent");
+                localStorage.setItem('emailtoken',data.token);
+                console.log("Email found");
                 return true;
             })
             .catch(error => {
@@ -25,11 +25,11 @@ export const LoginPhone = async (data) => {
     }
 };
 
-export const LoginOtp = async (data) => {
+export const LoginPass = async (data) => {
     try {
-        console.log("In login otp auth");
+        console.log("In login pass auth");
         console.log(data);
-        const token = localStorage.getItem('phonetoken');
+        const token = localStorage.getItem('emailtoken');
         console.log(token);
         const requestOptions = {
             method: 'POST',
@@ -39,13 +39,13 @@ export const LoginOtp = async (data) => {
             },
             body: JSON.stringify(data)
         };
-        await fetch('https://fma7xvauo3.execute-api.ap-south-1.amazonaws.com/Dev/loginotp', requestOptions)
+        await fetch('https://le2fpw7qj8.execute-api.ap-south-1.amazonaws.com/Prod/loginpass', requestOptions)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
                 localStorage.setItem('token',data.token);
                 console.log("Login/Signup successful");
-                localStorage.removeItem('phonetoken');
+                localStorage.removeItem('emailtoken');
                 return true;
             })
             .catch(error => {
