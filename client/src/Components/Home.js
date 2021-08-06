@@ -72,6 +72,9 @@ class Home extends Component {
                         <div className="row row-content">
                             <div className="col-12">
                                 <h2>Barbers</h2>
+                                <Button href="/addbarb" variant="info" size="lg" style={{float: 'right'}}>
+                                    Add Barber
+                                </Button>
                             </div>
                             <div className="col-12 col-md m-1">
                                 <Media list>

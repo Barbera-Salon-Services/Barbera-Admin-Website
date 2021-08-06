@@ -19,6 +19,7 @@ import ChangeRef from './ChangeRef';
 import Offers from './Offers';
 import AddOffer from './AddOffer';
 import AddAdmin from './AddAdmin';
+import AddBarber from './AddBarber';
 import UpdateOffer from './UpdateOffer';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { LoginEmail, LoginPass } from '../Functions/login';
@@ -57,6 +58,7 @@ class Main extends Component {
                 <Route path="/coininc" component={() => <AddCoins />} />
                 <Route path="/pass" component={() => <ResetPassword />} />
                 <Route path="/addadmin" component={() => <AddAdmin />} />
+                <Route path="/addbarb" component={() => <AddBarber />} />
                 <Redirect to="/home" />
             </Switch>
             {/* <Footer /> */}

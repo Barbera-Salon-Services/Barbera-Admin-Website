@@ -7,14 +7,65 @@ class BarberLog extends Component {
         super(props);
         this.state = {
             barber: this.props.match.params.barber,
-            logs: []
+            logs: [],
+            items: [],
+            item: '',
+            quantity: '',
         }
+    }
+
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.type ==='checkbox' ? target.checked : target.value;
+        const name = target.name;
+        this.setState({ [name]: value });
+    }
+
+    onSubmit = async(event) => {
+        event.preventDefault();
+        console.log("Submitting:",this.state);
+        if(localStorage.getItem('token') !== null){
+            if(this.state.item === '' || this.state.quantity === '') {
+                alert("Please fill the required details");
+                console.log("Submission Failed");
+            } else {
+                const token = localStorage.getItem('token');
+                console.log(token); 
+                var barber = this.state.barber.split(',');
+                const barberId = barber[0];
+                var data = {
+                    barberId: barberId,
+                    item: this.state.item,
+                    quantity: this.state.quantity,
+                };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                };
+                await fetch('https://le2fpw7qj8.execute-api.ap-south-1.amazonaws.com/Prod/additem', requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Service added");
+                        this.setState({
+                            item: '',
+                            quantity: '',
+                        });
+                        this.getItems();
+                    })
+                    .catch(error => alert(error));
+            }
+        } 
     }
 
     componentDidMount() {
         if(localStorage.getItem('token')){
             console.log(this.state);
             this.getLogs();
+            this.getItems();
         } 
     }
 
@@ -43,8 +94,39 @@ class BarberLog extends Component {
         } 
     }
 
+    getItems = async() => {
+        if(localStorage.getItem('token') !== null){
+            const token = localStorage.getItem('token');
+            console.log(token); 
+            var barber = this.state.barber.split(',');
+            const barberId = barber[0];
+            var data = {
+                barberId: barberId
+            };
+
+            const requestOptions = {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(data)
+            };
+
+            await fetch(`https://le2fpw7qj8.execute-api.ap-south-1.amazonaws.com/Prod/getitems`, requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    this.setState({
+                        items: data.data,
+                    });
+                })
+                .catch(error => alert(error));
+        } 
+    }
+
     render() {
-        console.log(this.state.barbers);
+        console.log(this.state);
 
         var barber = this.state.barber.split(',');
         const barberId = barber[0];
@@ -59,6 +141,15 @@ class BarberLog extends Component {
             distances.push(this.state.logs[i].distance);
         }
 
+        var id = 0;
+
+        const items = this.state.items.map((item) => {
+            id++;
+            return (
+                <li key={id}>{item.item}{'   ------>   '}{item.quantity}</li>
+            );
+        });
+
         return (
             <>
                 { localStorage.getItem('token') ? null : <Redirect to="/home" />}
@@ -71,6 +162,23 @@ class BarberLog extends Component {
                     {this.state.logs.length !== 0 ?  
                     <BarChart distances={distances} dates={dates} name={barberName} phone={barberPhone} />
                     : null}
+                    <div className="container">
+                        <div style={{paddingTop: '5%'}}>
+                            <h2>
+                                Items
+                            </h2>
+                        </div>
+                        { this.state.items.length !==0 ? <ul>{items}</ul> : null}
+                        <div>
+                            <form onSubmit={this.onSubmit}>
+                                <label for="item">Item:</label>
+                                <input name="item" id="item" type="text" onChange={this.handleInputChange} value={this.state.item} />
+                                <label for="quantity">Quantity:</label>
+                                <input name="quantity" id="quantity" type="text" onChange={this.handleInputChange} value={this.state.quantity}/>
+                                <input name="submit" id="submit" type="submit" /> 
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </>
         );
