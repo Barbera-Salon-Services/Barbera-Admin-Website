@@ -12,10 +12,12 @@ class CouponCreate extends Component {
             upperpricelim: '',
             lowerpricelim: '',
             userlim: '',
+            terms: '',
             touched: {
                 name: false,
                 discount: false,
                 lowerpricelim: false,
+                terms: false
             }
         }
     }
@@ -37,11 +39,12 @@ class CouponCreate extends Component {
         });
     }
 
-    validate(name, discount, lowerpricelim) {
+    validate(name, discount, lowerpricelim, terms) {
         const errors = {
             name: '',
             discount: '',
-            lowerpricelim: ''
+            lowerpricelim: '',
+            terms: ''
         };
 
         if(this.state.touched.name && name.length === 0)
@@ -53,6 +56,9 @@ class CouponCreate extends Component {
         if(this.state.touched.lowerpricelim && lowerpricelim.length === 0)
             errors.lowerpricelim = 'Lower Price Limit should not be empty';
 
+        if(this.state.touched.terms && terms.length === 0)
+            errors.terms = 'Terms should not be empty';
+
         return errors;
     }
 
@@ -60,7 +66,7 @@ class CouponCreate extends Component {
         event.preventDefault();
         console.log("Submitting:",this.state);
         if(localStorage.getItem('token') !== null){
-            if(this.state.name === '' || this.state.discount === '' || this.state.lowerpricelim === '') {
+            if(this.state.name === '' || this.state.discount === '' || this.state.lowerpricelim === '' || this.state.terms === '') {
                 alert("Please fill the full form");
                 console.log("Submission Failed");
             } else {
@@ -72,7 +78,8 @@ class CouponCreate extends Component {
                     discount: Number(this.state.discount),
                     lowerlimit: Number(this.state.lowerpricelim),
                     upperlimit: Number(this.state.upperpricelim),
-                    userlimit: Number(this.state.userlim)
+                    userlimit: Number(this.state.userlim),
+                    terms: this.state.terms
                 };
                 const requestOptions = {
                     method: 'POST',
@@ -92,10 +99,12 @@ class CouponCreate extends Component {
                             upperpricelim: '',
                             lowerpricelim: '',
                             userlim: '',
+                            terms: '',
                             touched: {
                                 name: false,
                                 discount: false,
                                 lowerpricelim: false,
+                                terms: false
                             }
                         });
                         event.target.reset();
@@ -105,13 +114,11 @@ class CouponCreate extends Component {
         } 
     }
 
-    onSubmit
-
     render() {
 
         console.log(this.state);
 
-        const errors = this.validate(this.state.name, this.state.discount, this.state.lowerpricelim);
+        const errors = this.validate(this.state.name, this.state.discount, this.state.lowerpricelim, this.state.terms);
 
         return(
             <div className="container">
@@ -190,6 +197,24 @@ class CouponCreate extends Component {
                                 value={this.state.userlim} 
                                 onChange={this.handleInputChange} 
                             />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="terms" sm={2}>Terms & Conditions</Label>
+                        <Col sm={10}>
+                            <Input type="textarea" id="terms" 
+                                rows="5" cols="10"
+                                name="terms" 
+                                placeholder="Terms & Conditions"
+                                valid={errors.terms === ''}
+                                invalid={errors.terms !== ''} 
+                                value={this.state.terms ? this.state.terms : ''} 
+                                onChange={this.handleInputChange} 
+                                onBlur={this.handleBlur('terms')}
+                            />
+                            <FormFeedback>
+                                {errors.terms}
+                            </FormFeedback>
                         </Col>
                     </FormGroup>
                     <FormGroup check row style={{paddingLeft: '0px'}}>

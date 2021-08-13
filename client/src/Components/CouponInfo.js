@@ -15,9 +15,11 @@ class CouponInfo extends Component {
             lowerlim: '',
             upperlim: '',
             userlim: '',
+            terms: '',
             touched: {
                 discount: false,
                 lowerlim: false,
+                terms: false
             }
         }
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -43,10 +45,11 @@ class CouponInfo extends Component {
         });
     }
 
-    validate(discount, lowerlim) {
+    validate(discount, lowerlim, terms) {
         const errors = {
             discount: '',
-            lowerlim: ''
+            lowerlim: '',
+            terms: ''
         };
 
         if(this.state.touched.discount && discount.length === 0)
@@ -54,6 +57,9 @@ class CouponInfo extends Component {
 
         if(this.state.touched.lowerlim && lowerlim.length === 0)
             errors.lowerlim = 'Discount should not be empty';
+
+        if(this.state.touched.terms && terms.length === 0)
+            errors.terms = 'Terms should not be empty';
 
         return errors;
     }
@@ -137,7 +143,8 @@ class CouponInfo extends Component {
                     discount: Number(this.state.discount),
                     upperlimit: Number(this.state.upperlim),
                     lowerlimit: Number(this.state.lowerlim),
-                    userlimit: Number(this.state.userlim)
+                    userlimit: Number(this.state.userlim),
+                    terms: this.state.terms
                 };
                 const requestOptions = {
                     method: 'POST',
@@ -162,7 +169,7 @@ class CouponInfo extends Component {
 
         console.log(this.state);
         
-        const errors = this.validate(this.state.discount, this.state.lowerlim );
+        const errors = this.validate(this.state.discount, this.state.lowerlim, this.state.terms );
 
         return (
             <>
@@ -245,6 +252,24 @@ class CouponInfo extends Component {
                                     value={this.state.userlim} 
                                     onChange={this.handleInputChange} 
                                 />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="terms" sm={2}>Terms & Conditions</Label>
+                            <Col sm={10}>
+                                <Input type="textarea" id="terms" 
+                                    rows="5" cols="10"
+                                    name="terms" 
+                                    placeholder="Terms & Conditions"
+                                    valid={errors.terms === ''}
+                                    invalid={errors.terms !== ''} 
+                                    value={this.state.terms ? this.state.terms : ''} 
+                                    onChange={this.handleInputChange} 
+                                    onBlur={this.handleBlur('terms')}
+                                />
+                                <FormFeedback>
+                                    {errors.terms}
+                                </FormFeedback>
                             </Col>
                         </FormGroup>
                         <FormGroup check row style={{paddingLeft: '0px'}}>
