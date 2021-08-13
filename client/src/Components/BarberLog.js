@@ -138,15 +138,16 @@ class BarberLog extends Component {
 
         for(var i=0; i<this.state.logs.length; i++) {
             dates.push(this.state.logs[i].date);
-            distances.push(this.state.logs[i].distance);
+            distances.push(this.state.logs[i].distance.toFixed(2));
         }
 
         var id = 0;
 
         const items = this.state.items.map((item) => {
             id++;
+            console.log(item.date);
             return (
-                <li key={id}>{item.item}{'   ------>   '}{item.quantity}</li>
+                <li key={id}>{item.date}{'   ------>   '}{item.item}{'   ------>   '}{item.quantity}</li>
             );
         });
 
